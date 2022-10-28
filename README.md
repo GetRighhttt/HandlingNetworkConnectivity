@@ -6,6 +6,9 @@
 First, I demonstrate how with using a broadcast receiver. Secondly, I will show how we can
 use live data and observe the changes made to connectivity that way. Both approaches are 
 pretty functoinal. Just depends on the use case in which you need to use them.
+
+I will say I believe that using a broadcast receiver is a better and more practical approach,
+as Live Data has it's disadvantages.
 </p>
 
 ![2022-10-28](https://user-images.githubusercontent.com/105057858/198591131-cf9a9ab8-341e-4b4c-a271-65263ecbfa1d.png)
