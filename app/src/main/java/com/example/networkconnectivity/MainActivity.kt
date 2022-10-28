@@ -104,6 +104,8 @@ class MainActivity : AppCompatActivity() {
 
     /*
     When activity starts, register receiver, and when it stops, unregister receiver.
+
+    Also wanted to show the activity lifecycle here just for demo purposes.
      */
     override fun onStart() {
         super.onStart()
@@ -111,7 +113,26 @@ class MainActivity : AppCompatActivity() {
             broadcastReceiver,
             IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
         )
-        Toast.makeText(this, "Activity started.", Toast.LENGTH_LONG).show()
+        Toast.makeText(
+            this, "Activity started.",
+            Toast.LENGTH_LONG
+        ).show()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Toast.makeText(
+            this, "Activity paused.",
+            Toast.LENGTH_LONG
+        ).show()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Toast.makeText(
+            this, "Activity resumed.",
+            Toast.LENGTH_LONG
+        ).show()
     }
 
     override fun onStop() {
@@ -119,6 +140,14 @@ class MainActivity : AppCompatActivity() {
         unregisterReceiver(broadcastReceiver)
         Toast.makeText(
             this, "Activity stopped.",
+            Toast.LENGTH_LONG
+        ).show()
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+        Toast.makeText(
+            this, "Activity restarted.",
             Toast.LENGTH_LONG
         ).show()
     }
