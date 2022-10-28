@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">NetworkConnectivity</string>
+    <string name="connected">Connected</string>
+    <string name="connection_lost">Connection lost.</string>
+    <string name="connected_good">Connected!</string>
+    <string name="disconnected">Disconnected</string>
+</resources>
