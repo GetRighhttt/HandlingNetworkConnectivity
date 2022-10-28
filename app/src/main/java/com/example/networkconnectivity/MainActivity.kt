@@ -1,15 +1,19 @@
 package com.example.networkconnectivity
 
+import android.Manifest
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.pm.PackageManager
 import android.net.ConnectivityManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import com.example.networkconnectivity.databinding.ActivityMainBinding
 import com.google.android.material.snackbar.Snackbar
 
@@ -60,6 +64,7 @@ class MainActivity : AppCompatActivity() {
             WindowManager.LayoutParams.FLAG_FULLSCREEN
         )
 
+        requestPermissions()
 
     }
 
@@ -125,5 +130,94 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         unregisterReceiver(broadcastReceiver)
+    }
+
+    /*
+    ------------------------------------------------------------------------------------------------
+    ------------------------------------------------------------------------------------------------
+    Above is all the code you need to be able to monitor connectivity with a broadcast receiver.
+
+    Below, I will just demonstrate how we can request permissions as well.
+
+    It will give a better picture of how some android apps perform in a more professional
+    environment.
+
+    This is pretty boilerplate code as this is how I ask for multiple permissions for
+    majority of my applications.
+
+    Also, this approach isn't usually used to internet and network permissions as those are usually
+    already turned on in the phones. However, these same methods can be used for asking a user
+    for their fine and coarse location.
+    ------------------------------------------------------------------------------------------------
+    -----------------------------------------------------------------------------------------------
+     */
+
+
+
+    private fun hasInternet() =
+        ActivityCompat.checkSelfPermission(
+
+            this,
+            Manifest.permission.INTERNET
+        ) == PackageManager.PERMISSION_GRANTED
+
+
+    private fun hasNetworkState() =
+        ActivityCompat.checkSelfPermission(
+            this,
+            Manifest.permission.ACCESS_NETWORK_STATE
+        ) == PackageManager.PERMISSION_GRANTED
+
+    private fun hasWifiState() =
+        ActivityCompat.checkSelfPermission(
+            this,
+            Manifest.permission.ACCESS_WIFI_STATE
+        ) == PackageManager.PERMISSION_GRANTED
+
+
+    private fun requestPermissions() {
+        val permissionsToRequest = mutableListOf<String>()
+
+        // If user did not accept permissions, then add it to the list.
+        if (!hasInternet()) {
+            permissionsToRequest.add(Manifest.permission.INTERNET)
+        }
+        if (!hasNetworkState()) {
+            permissionsToRequest.add(Manifest.permission.ACCESS_NETWORK_STATE)
+        }
+        if (!hasWifiState()) {
+            permissionsToRequest.add(Manifest.permission.ACCESS_WIFI_STATE)
+        }
+
+
+        if (permissionsToRequest.isNotEmpty()) {
+            ActivityCompat.requestPermissions(
+                this,
+                permissionsToRequest.toTypedArray(),
+                0
+            )
+        }
+    }
+
+    /*
+    Method called when the permissions are requested from the user.
+     */
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == 0 && grantResults.isNotEmpty()) {
+            // can loop through grant results array.
+            for (i in grantResults.indices) {// indices = size -1
+                if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+                    Log.d(
+                        "MainActivity Permissions Request.",
+                        "${permissions[i]} granted."
+                    ) // print the permissions granted
+                }
+            }
+        }
     }
 }
