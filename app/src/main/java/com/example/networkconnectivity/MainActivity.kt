@@ -50,6 +50,12 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /*
+    This is the variable we will use for our Live Data connection
+     */
+    private lateinit var cld: ConnectionLiveData
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -63,9 +69,37 @@ class MainActivity : AppCompatActivity() {
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
             WindowManager.LayoutParams.FLAG_FULLSCREEN
         )
-
         requestPermissions()
+        checkNetworkConnection()
+    }
 
+    /*
+    Here is the method call we will use for our live data connection.
+    This is not necessary as I prefer to use a broadcast receiver,
+    however this is another way of doing it.
+     */
+    private fun checkNetworkConnection() {
+        cld = ConnectionLiveData(application)
+
+        cld.observe(this) { isConnected ->
+
+            binding.apply {
+                if (isConnected) {
+                    binding.apply {
+                        tvConnected.alpha = 1F
+                        ivConnected.alpha = 1F
+                        tvDisconnected.alpha = 0F
+                        ivDisconnected.alpha = 0F
+                    }
+                } else {
+                    tvConnected.alpha = 0F
+                    ivConnected.alpha = 0F
+                    tvDisconnected.alpha = 1F
+                    ivDisconnected.alpha = 1F
+                }
+            }
+
+        }
     }
 
     /*
@@ -151,7 +185,6 @@ class MainActivity : AppCompatActivity() {
     ------------------------------------------------------------------------------------------------
     -----------------------------------------------------------------------------------------------
      */
-
 
 
     private fun hasInternet() =
