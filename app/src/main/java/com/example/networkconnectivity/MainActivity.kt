@@ -70,7 +70,7 @@ class MainActivity : AppCompatActivity() {
             WindowManager.LayoutParams.FLAG_FULLSCREEN
         )
         requestPermissions()
-        checkNetworkConnection()
+//        checkNetworkConnection()
     }
 
     /*
@@ -134,7 +134,7 @@ class MainActivity : AppCompatActivity() {
         binding.apply {
             Snackbar.make(
                 mainActivity,
-                "Disconnected", Snackbar.LENGTH_INDEFINITE
+                "Disconnected", Snackbar.LENGTH_LONG
             ).show()
 
             tvConnected.alpha = 0F
